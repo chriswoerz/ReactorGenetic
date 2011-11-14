@@ -1,0 +1,20 @@
+﻿<Window x:Class="ReactorGeneric.Main"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Reactor Genetic" Height="800" Width="1200">
+    <Grid>
+        <TextBox Margin="12,23,12,127" Name="txtOutput" IsReadOnly="True" VerticalScrollBarVisibility="Auto" />
+        <Button Height="23" HorizontalAlignment="Left" Margin="12,0,0,12" Name="btnStart" VerticalAlignment="Bottom" Width="75" Click="btnStart_Click">Start</Button>
+        <Button Height="23" HorizontalAlignment="Left" Margin="122,0,0,12" Name="btnPause" VerticalAlignment="Bottom" Width="75" IsEnabled="False" Click="btnPause_Click">Pause</Button>
+        <Button Height="23" HorizontalAlignment="Left" Margin="235,0,0,12" Name="btnStop" VerticalAlignment="Bottom" Width="75" IsEnabled="False" Click="btnStop_Click">Stop</Button>
+        <Button Height="23" HorizontalAlignment="Left" Margin="345,0,0,12" Name="btnClear" VerticalAlignment="Bottom" Width="75" Click="btnClear_Click">Clear</Button>
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,0,913,98" Name="txtPopulation" VerticalAlignment="Bottom" Width="147">1000</TextBox>
+        <Label Height="23" HorizontalAlignment="Left" Margin="12,641,0,0" Name="lblPopulation" VerticalAlignment="Top" Width="100">Population Size:</Label>
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,0,913,59" Name="txtChamber" VerticalAlignment="Bottom" Width="147">2</TextBox>
+        <Label Height="23" HorizontalAlignment="Left" Margin="12,0,0,61" Name="lblChamber" VerticalAlignment="Bottom" Width="100">Chambers Per:</Label>
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,0,631,98" Name="txtGenerations" VerticalAlignment="Bottom" Width="147">1000</TextBox>
+        <Label Height="23" HorizontalAlignment="Left" Margin="294,0,0,98" Name="lblGenerations" VerticalAlignment="Bottom" Width="100">Generations:</Label>
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="400,0,0,59" Name="txtTicks" VerticalAlignment="Bottom" Width="147">200000</TextBox>
+        <Label Height="23" HorizontalAlignment="Left" Margin="294,0,0,59" Name="lblTicks" VerticalAlignment="Bottom" Width="100">Ticks Per Gen:</Label>
+    </Grid>
+</Window>
