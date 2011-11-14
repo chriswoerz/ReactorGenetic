@@ -8,7 +8,7 @@ Reactor::Reactor(int chamberCount)
 	for(int i = 0; i < chamberCount; i++)
 	{
 		chambers[i] = gcnew Chamber();
-		chambers[i]->HookupEvents(this);
+		chambers[i]->HookupEvents();
 	}
 	hullHeat = 0;
 }

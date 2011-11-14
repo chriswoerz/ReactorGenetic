@@ -2,15 +2,15 @@
 #include "Chamber.h"
 #include "Reactor.h"
 
-Chamber::Chamber(Reactor^ &reactor)
+Chamber::Chamber(void)
 {
 	HookupEvents();
 }
 
-void Chamber::OnPulseEvent(Reactor^ reactor, EventArgs^ args){
-	
-}
+//void Chamber::OnPulseEvent(Reactor^ reactor, EventArgs^ args){
+//	
+//}
 
-Chamber::HookupEvents(){
-	ItsReactor->PulseEvent += gcnew EventHandler(this, &EventReciever::OnPulseEvent);
+void Chamber::HookupEvents(){
+	//ItsReactor->PulseEvent += gcnew EventHandler(this, &EventReciever::OnPulseEvent);
 }
