@@ -3,3 +3,4 @@ _Resharper*/
 **/Debug/
 Debug/
 *.suo
+*.ncb
