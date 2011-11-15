@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace ReactorGeneric
 {
@@ -20,24 +22,23 @@ namespace ReactorGeneric
 
         public static void Start(int population, int chambers, int generations, int ticksPerGeneration)
         {
-            ItsPopulation = new Population(population, chambers);
+            var doneEvents = new ManualResetEvent[population];
 
-            for (int i = 0; i < ticksPerGeneration; i++)
+            for (int index = 0; index < doneEvents.Length; index++)
             {
-                if(ItsStopFlag){
-                    ItsStopFlag = false;
-                    break;
-                }
+                doneEvents[index] = new ManualResetEvent(false);
+            }
+            ItsPopulation = new Population(population, chambers, ticksPerGeneration, doneEvents);
 
-                ItsPopulation.OnPulse(new EventArgs());
+            foreach (Reactor reactor in ItsPopulation.ItsReactors)
+            {
+                ThreadPool.QueueUserWorkItem(Population.RunReactor, reactor);
             }
 
-            Fitness.Determine(ItsPopulation);
+            WaitHandle.WaitAll(doneEvents);
+            var reporttxt = ItsPopulation.GenerateFitnessReport(ticksPerGeneration);
 
-            var reporttxt = ItsPopulation.GenerateReport();
-
-            OnReport(new ReportEventArgs{ReportText = reporttxt});
-
+            OnReport(new ReportEventArgs { ReportText = reporttxt });
         }
 
         private static bool ItsStopFlag { get; set; }
@@ -55,9 +56,9 @@ namespace ReactorGeneric
 
     public static class Fitness
     {
-        public static void Determine(Population itsPopulation)
+        public static void Determine(ref IList<Reactor> reactors )
         {
-            itsPopulation.ItsReactors.ToList().Sort();
+            reactors.ToList().Sort();
         }
     }
 }

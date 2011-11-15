@@ -2,7 +2,7 @@
 
 namespace ReactorGeneric.Component
 {
-    public class CoolantCell : AbstractComponent , ICooler
+    public class CoolantCell : AbstractComponent , ICooler, IMeltable
     {
         public CoolantCell(uint xpos, uint ypos, Component type)
             : base(xpos, ypos, type)
@@ -12,6 +12,7 @@ namespace ReactorGeneric.Component
 
         public override void PulseHandler(object sender, EventArgs e)
         {
+            ItsCurrentHeat -= ItsCoolingPerTick;
             base.PulseHandler(sender, e);
            
         }
@@ -19,13 +20,19 @@ namespace ReactorGeneric.Component
         public override void GiveHeat(int genHeat)
         {
             ItsCurrentHeat += genHeat;
+            if(ItsCurrentHeat >= ItsMeltingPoint) ItsReactor.OnMelt(new EventArgs());
         }
 
-        protected int ItsCurrentHeat { get; set; }
+        protected float ItsCurrentHeat { get; set; }
 
-        public float CoolingPerTick
+        public float ItsCoolingPerTick
         {
-            get { throw new NotImplementedException(); }
+            get { return 1; }
+        }
+
+        public int ItsMeltingPoint
+        {
+            get { return 10000; }
         }
     }
 }

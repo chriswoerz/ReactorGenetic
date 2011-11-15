@@ -52,6 +52,7 @@ namespace ReactorGeneric.Component
         public override void GiveHeat(int genHeat)
         {
             //Fat Interface
+            //throw new NotImplementedException();
         }
 
         private void GiveHeatAdjacent(int genHeat)
@@ -59,14 +60,14 @@ namespace ReactorGeneric.Component
             if (ItsLeft != null) ItsLeft.GiveHeat(genHeat);
             if (ItsRight != null) ItsRight.GiveHeat(genHeat);
             if (ItsAbove != null) ItsAbove.GiveHeat(genHeat);
-            if (ItsBelow != null) ItsBelow.GiveHeat(genHeat);
+            if (ItsBelow != null) ItsBelow.GiveHeat(genHeat); 
         }
 
         private int GetCoolerCount()
         {
             int count = 0;
 
-            if (ItsLeft != null) count = ItsLeft is ICooler ? 1 : 0;
+            if (ItsLeft != null) count += ItsLeft is ICooler ? 1 : 0;
             if (ItsRight != null) count += ItsRight is ICooler ? 1 : 0;
             if (ItsAbove != null) count += ItsAbove is ICooler ? 1 : 0;
             if (ItsBelow != null) count += ItsBelow is ICooler ? 1 : 0;
@@ -76,9 +77,9 @@ namespace ReactorGeneric.Component
 
         private int GetPulses()
         {
-            int count = 0;
+            int count = 1;
 
-            if (ItsLeft != null) count = ItsLeft.IsType(this.Type) ? 1 : 0;
+            if (ItsLeft != null) count += ItsLeft.IsType(this.Type) ? 1 : 0;
             if (ItsRight != null) count += ItsRight.IsType(this.Type) ? 1 : 0;
             if (ItsAbove != null) count += ItsAbove.IsType(this.Type) ? 1 : 0;
             if (ItsBelow != null) count += ItsBelow.IsType(this.Type) ? 1 : 0;

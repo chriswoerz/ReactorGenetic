@@ -23,7 +23,7 @@ namespace ReactorGeneric.Component
 
         protected int ItsCurrentHeat { get; set; }
 
-        public float CoolingPerTick
+        public float ItsCoolingPerTick
         {
             get { throw new NotImplementedException(); }
         }

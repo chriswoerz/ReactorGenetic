@@ -7,6 +7,6 @@ namespace ReactorGeneric.Component
 {
     interface ICooler : IComponent
     {
-        float CoolingPerTick { get; }
+        float ItsCoolingPerTick { get; }
     }
 }

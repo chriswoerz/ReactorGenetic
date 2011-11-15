@@ -7,7 +7,7 @@ namespace ReactorGeneric.Component
 {
     public class Chamber
     {
-        public static int HeatCapacity = 10000;
+        public static int SystemCapacityAdd = 10000;
 
         private Reactor ItsReactor { get; set; }
 
