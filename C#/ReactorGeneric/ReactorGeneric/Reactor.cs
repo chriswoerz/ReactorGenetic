@@ -7,7 +7,7 @@ namespace ReactorGeneric
 {
     public delegate void PulseEventHandler(object sender, PulseEventArgs args);
 
-    public class Reactor : IDisposable
+    public class Reactor : IDisposable, IComparable<Reactor>
     {
         public IList<Chamber> Chambers
         {
@@ -84,10 +84,10 @@ namespace ReactorGeneric
 
         public string GetReport()
         {
-            return string.Format("H: {0} E: {1} M: {2}", CurrentHeat, PowerOutput, GetManifest());
+            return string.Format("H: {0} E: {1} R: {2} M: {3}", CurrentHeat, PowerOutput, GetPowerHeatRatio(), GetPrettyManifest());
         }
 
-        private string GetManifest()
+        private string GetPrettyManifest()
         {
             string toReturn = string.Empty;
 
@@ -95,9 +95,10 @@ namespace ReactorGeneric
             {
                 for (uint y = 0; y < GetHeight(); y++)
                 {
-                    var component = GetComponent(x, y);
-
-                    toReturn += (int)component.Type;
+                    string cString = string.Empty;
+                    cString += GetComponent(x, y).Type;
+                    
+                    toReturn += cString.First();
                 }
                 toReturn += ":";
             }
@@ -124,6 +125,16 @@ namespace ReactorGeneric
         public void EmitEU(int pulses)
         {
             PowerOutput += 5*pulses;
+        }
+
+        private float GetPowerHeatRatio()
+        {
+            return PowerOutput/CurrentHeat;
+        }
+
+        public int CompareTo(Reactor other)
+        {
+            return GetPowerHeatRatio().CompareTo(other.GetPowerHeatRatio());
         }
     }
 }

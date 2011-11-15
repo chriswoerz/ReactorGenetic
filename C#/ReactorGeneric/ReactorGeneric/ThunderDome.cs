@@ -32,6 +32,8 @@ namespace ReactorGeneric
                 ItsPopulation.OnPulse(new EventArgs());
             }
 
+            Fitness.Determine(ItsPopulation);
+
             var reporttxt = ItsPopulation.GenerateReport();
 
             OnReport(new ReportEventArgs{ReportText = reporttxt});
@@ -48,6 +50,14 @@ namespace ReactorGeneric
         public static void Stop()
         {
             ItsStopFlag = true;
+        }
+    }
+
+    public static class Fitness
+    {
+        public static void Determine(Population itsPopulation)
+        {
+            itsPopulation.ItsReactors.ToList().Sort();
         }
     }
 }
