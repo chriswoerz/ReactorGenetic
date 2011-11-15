@@ -63,16 +63,19 @@ namespace ReactorGeneric
                     switch (component)
                     {
                         case Component.Component.UranCell:
-                            newComponent = new UraninumCell(x, y);
+                            newComponent = new UraninumCell(x, y, component);
                             break;
                         case Component.Component.CoolCell:
-                            newComponent = new CoolantCell(x, y);
+                            newComponent = new CoolantCell(x, y, component);
                             break;
                         case Component.Component.HeatDispenser:
-                            newComponent = new HeatDispenser(x, y);
+                            newComponent = new HeatDispenser(x, y, component);
                             break;
                         case Component.Component.ReactorPlating:
-                            newComponent = new ReactorPlating(x, y);
+                            newComponent = new ReactorPlating(x, y, component);
+                            break;
+                        case Component.Component.Empty:
+                            newComponent = new Empty(x, y, component);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();

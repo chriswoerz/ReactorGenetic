@@ -7,20 +7,25 @@ namespace ReactorGeneric.Component
 {
     public abstract class AbstractComponent :IComponent
     {
-        protected AbstractComponent(uint xpos, uint ypos)
+        private readonly Component _type;
+
+        public Component Type { get { return _type; } }
+
+        protected AbstractComponent(uint xpos, uint ypos, Component type)
         {
             XPosition = xpos;
             YPosition = ypos;
+            _type = type;
         }
 
         public virtual void PulseHandler(object sender, EventArgs e)
         {
             ItsReactor = (Reactor)sender;
 
-            ItsLeft = ItsLeft ?? ItsReactor.GetComponent((int)XPosition - 1, (int)YPosition);
-            ItsRight = ItsRight ?? ItsReactor.GetComponent((int)XPosition + 1, (int)YPosition);
-            ItsAbove = ItsAbove ?? ItsReactor.GetComponent((int)XPosition, (int)YPosition + 1);
-            ItsBelow = ItsBelow ?? ItsReactor.GetComponent((int)XPosition, (int)YPosition - 1);
+            ItsLeft = ItsLeft ?? ItsReactor.GetComponent(XPosition - 1, YPosition);
+            ItsRight = ItsRight ?? ItsReactor.GetComponent(XPosition + 1, YPosition);
+            ItsAbove = ItsAbove ?? ItsReactor.GetComponent(XPosition, YPosition + 1);
+            ItsBelow = ItsBelow ?? ItsReactor.GetComponent(XPosition, YPosition - 1);
         }
 
         protected IComponent ItsBelow { get; set; }
@@ -35,5 +40,12 @@ namespace ReactorGeneric.Component
 
         public uint XPosition { get; private set; }
         public uint YPosition { get; private set; }
+
+        public bool IsType(Component component)
+        {
+            return component == Type;
+        }
+
+        public abstract void GiveHeat(int genHeat);
     }
 }

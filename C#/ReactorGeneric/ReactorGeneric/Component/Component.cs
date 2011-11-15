@@ -10,6 +10,7 @@ namespace ReactorGeneric.Component
         UranCell = 0,
         CoolCell = 1,
         HeatDispenser = 2,
-        ReactorPlating = 3
+        ReactorPlating = 3,
+        Empty = 4
     }
 }

@@ -13,6 +13,8 @@ namespace ReactorGeneric
         {
             get; set; 
         }
+
+        public int PowerOutput { get; private set; }
         
         public Reactor(Population population, int chambers, string contents)
         {
@@ -82,7 +84,24 @@ namespace ReactorGeneric
 
         public string GetReport()
         {
-            return string.Format("H: {0}", CurrentHeat);
+            return string.Format("H: {0} E: {1} M: {2}", CurrentHeat, PowerOutput, GetManifest());
+        }
+
+        private string GetManifest()
+        {
+            string toReturn = string.Empty;
+
+            for (uint x = 0; x < GetWidth(); x++)
+            {
+                for (uint y = 0; y < GetHeight(); y++)
+                {
+                    var component = GetComponent(x, y);
+
+                    toReturn += (int)component.Type;
+                }
+                toReturn += ":";
+            }
+            return toReturn;
         }
 
         public int GetWidth()
@@ -95,11 +114,16 @@ namespace ReactorGeneric
             return 6;
         }
 
-        public IComponent GetComponent(int xpos, int ypos)
+        public IComponent GetComponent(uint xpos, uint ypos)
         {
             if (xpos < 0 || ypos < 0) return null;
 
             return Components.ToList().Find(c => c.XPosition == xpos && c.YPosition == ypos);
+        }
+
+        public void EmitEU(int pulses)
+        {
+            PowerOutput += 5*pulses;
         }
     }
 }

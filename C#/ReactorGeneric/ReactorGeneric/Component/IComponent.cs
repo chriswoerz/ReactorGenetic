@@ -10,5 +10,8 @@ namespace ReactorGeneric.Component
         void PulseHandler(object sender, EventArgs e);
         uint XPosition { get; }
         uint YPosition { get; }
+        bool IsType(Component component);
+        void GiveHeat(int genHeat);
+        Component Type { get; }
     }
 }

@@ -2,9 +2,10 @@
 
 namespace ReactorGeneric.Component
 {
-    public class CoolantCell : AbstractComponent
+    public class CoolantCell : AbstractComponent , ICooler
     {
-        public CoolantCell(uint xpos, uint ypos) : base(xpos, ypos)
+        public CoolantCell(uint xpos, uint ypos, Component type)
+            : base(xpos, ypos, type)
         {
             
         }
@@ -13,6 +14,18 @@ namespace ReactorGeneric.Component
         {
             base.PulseHandler(sender, e);
            
+        }
+
+        public override void GiveHeat(int genHeat)
+        {
+            ItsCurrentHeat += genHeat;
+        }
+
+        protected int ItsCurrentHeat { get; set; }
+
+        public float CoolingPerTick
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }
