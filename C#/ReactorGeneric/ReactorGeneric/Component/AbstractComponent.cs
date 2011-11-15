@@ -16,10 +16,11 @@ namespace ReactorGeneric.Component
         public virtual void PulseHandler(object sender, EventArgs e)
         {
             ItsReactor = (Reactor)sender;
-            ItsLeft = ItsReactor.GetComponent((int)XPosition - 1, (int)YPosition);
-            ItsRight = ItsReactor.GetComponent((int)XPosition + 1, (int)YPosition);
-            ItsAbove = ItsReactor.GetComponent((int)XPosition, (int)YPosition + 1);
-            ItsBelow = ItsReactor.GetComponent((int)XPosition, (int)YPosition - 1);
+
+            ItsLeft = ItsLeft ?? ItsReactor.GetComponent((int)XPosition - 1, (int)YPosition);
+            ItsRight = ItsRight ?? ItsReactor.GetComponent((int)XPosition + 1, (int)YPosition);
+            ItsAbove = ItsAbove ?? ItsReactor.GetComponent((int)XPosition, (int)YPosition + 1);
+            ItsBelow = ItsBelow ?? ItsReactor.GetComponent((int)XPosition, (int)YPosition - 1);
         }
 
         protected IComponent ItsBelow { get; set; }
