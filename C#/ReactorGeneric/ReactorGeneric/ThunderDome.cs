@@ -24,11 +24,11 @@ namespace ReactorGeneric
 
             for (int i = 0; i < ticksPerGeneration; i++)
             {
-                if(ItsStopFlag)
-                {
+                if(ItsStopFlag){
                     ItsStopFlag = false;
                     break;
                 }
+
                 ItsPopulation.OnPulse(new EventArgs());
             }
 
@@ -49,11 +49,5 @@ namespace ReactorGeneric
         {
             ItsStopFlag = true;
         }
-    }
-
-    public class ReportEventArgs : EventArgs
-    {
-        public string ReportText { get; set; }
-        
     }
 }

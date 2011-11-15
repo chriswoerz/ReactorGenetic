@@ -5,7 +5,9 @@ using ReactorGeneric.Component;
 
 namespace ReactorGeneric
 {
-    public class Reactor : IHeatContainer, IDisposable
+    public delegate void PulseEventHandler(object sender, PulseEventArgs args);
+
+    public class Reactor : IDisposable
     {
         public IList<Chamber> Chambers
         {
@@ -16,10 +18,11 @@ namespace ReactorGeneric
         {
             ItsPopulation = population;
             Chambers = new List<Chamber>();
+            Components = new List<IComponent>();
             for (int i = 0; i < chambers; i++)
             {
                 var chamber = new Chamber(this);
-                ItsPopulation.Pulse += chamber.PulseHandler;
+                this.Pulse += chamber.PulseHandler;
                 Chambers.Add(chamber);
             }
 
@@ -29,6 +32,8 @@ namespace ReactorGeneric
 
         }
 
+        public event EventHandler<EventArgs> Pulse;
+
         private void HookupEvents()
         {
             ItsPopulation.Pulse += PulseHandler;
@@ -37,6 +42,7 @@ namespace ReactorGeneric
         private void PulseHandler(object sender, EventArgs e)
         {
             CurrentHeat -= 1;
+            Pulse(this, new EventArgs());
         }
 
         protected Population ItsPopulation { get; set; }
@@ -53,6 +59,8 @@ namespace ReactorGeneric
             get { return this.HeatCapacity + Chamber.HeatCapacity*Chambers.Count; }
         }
 
+        public IList<IComponent> Components { get; set; }
+
         public void Dispose()
         {
             UnhookEvents();
@@ -63,13 +71,35 @@ namespace ReactorGeneric
             ItsPopulation.Pulse -= PulseHandler;
             foreach (var chamber in Chambers)
             {
-                ItsPopulation.Pulse -= chamber.PulseHandler;
+                Pulse -= chamber.PulseHandler;
+            }
+
+            foreach (var component in Components)
+            {
+                Pulse -= component.PulseHandler;
             }
         }
 
         public string GetReport()
         {
             return string.Format("H: {0}", CurrentHeat);
+        }
+
+        public int GetWidth()
+        {
+            return 3 + Chambers.Count;
+        }
+
+        public int GetHeight()
+        {
+            return 6;
+        }
+
+        public IComponent GetComponent(int xpos, int ypos)
+        {
+            if (xpos < 0 || ypos < 0) return null;
+
+            return Components.ToList().Find(c => c.XPosition == xpos && c.YPosition == ypos);
         }
     }
 }
