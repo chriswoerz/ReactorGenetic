@@ -73,6 +73,8 @@
     <Compile Include="Component\Component.cs" />
     <Compile Include="Component\ICooler.cs" />
     <Compile Include="Component\IComponent.cs" />
+    <Compile Include="Component\CoolantCell.cs" />
+    <Compile Include="Component\HeatDispenser.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -89,8 +91,10 @@
     </Compile>
     <Compile Include="PulseEventArgs.cs" />
     <Compile Include="Reactor.cs" />
+    <Compile Include="Component\ReactorPlating.cs" />
     <Compile Include="ReportEventArgs.cs" />
     <Compile Include="ThunderDome.cs" />
+    <Compile Include="Component\UraninumCell.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
