@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -59,7 +60,36 @@ namespace ReactorGeneric
 
         private void ReportToUserHandler(object sender, ReportEventArgs e)
         {
-            txtOutput.AppendText(e.ReportText); 
+            if (txtOutput.Dispatcher.Thread == Thread.CurrentThread)
+            {
+                switch (e.Action)
+                {
+                    case ReportType.Replace:
+                        txtOutput.Text = e.ReportText;
+                        break;
+                    case ReportType.Append:
+                        txtOutput.AppendText(e.ReportText);
+                        break;
+                    case ReportType.ReplaceLast:
+                        txtOutput.Text = RemoveLastLine(txtOutput.Text);
+                        txtOutput.AppendText(e.ReportText);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            else
+            {
+                txtOutput.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                    new EventHandler<ReportEventArgs>(ReportToUserHandler), sender, new object[] { e });
+            }
+        }
+
+        private string RemoveLastLine(string text)
+        {
+            var lines = text.Split('\n');
+            var newLines = lines.Take(lines.Count() - 1);
+            return String.Join(Environment.NewLine, newLines);
         }
 
         private bool ValidInputs()

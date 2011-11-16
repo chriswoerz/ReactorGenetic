@@ -11,7 +11,7 @@ namespace ReactorGeneric
     public class Reactor : IDisposable, IComparable<Reactor>
     {
         private int? _totalHeatCap;
-        private readonly ManualResetEvent _itsFinishedHandle;
+        private int _pulsesRecieved;
 
         public IList<Chamber> Chambers
         {
@@ -20,9 +20,8 @@ namespace ReactorGeneric
 
         public int ItsPowerOutput { get; private set; }
         
-        public Reactor(Population population, int chambers, string contents, ManualResetEvent finishedHandle)
+        public Reactor(Population population, int chambers, string contents)
         {
-            _itsFinishedHandle = finishedHandle;
             ItsPopulation = population;
             Chambers = new List<Chamber>();
             ItsComponents = new List<IComponent>();
@@ -51,17 +50,15 @@ namespace ReactorGeneric
 
         public void OnTick()
         {
-            CurrentHeat -= 1;
-            if (Pulse != null)
+            if (Pulse != null && !ItsMeltedFlag)
             {
+                ItsPulsesRecieved++;
+                CurrentHeat -= 1;
                 Pulse(this, new EventArgs());
             }
         }
 
-        public void MarkFinal()
-        {
-            _itsFinishedHandle.Set();
-        }
+      
 
         private void HookupEvents()
         {
@@ -99,6 +96,12 @@ namespace ReactorGeneric
         }
 
         public IList<IComponent> ItsComponents { get; set; }
+
+        private int ItsPulsesRecieved
+        {
+            get { return _pulsesRecieved; }
+            set { _pulsesRecieved = value; }
+        }
 
         public void Dispose()
         {

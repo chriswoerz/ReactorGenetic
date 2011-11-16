@@ -11,7 +11,7 @@ namespace ReactorGeneric
         public IList<Reactor> ItsReactors { get; set; }
         private static int ItsTicksPerGeneration { get; set; }
 
-        public Population(int populationSize, int chambersPer, int ticksPerGeneration, ManualResetEvent[] finishedTrials)
+        public Population(int populationSize, int chambersPer, int ticksPerGeneration)
         {
             ItsTicksPerGeneration = ticksPerGeneration;
             var contents = "blarg";
@@ -19,7 +19,7 @@ namespace ReactorGeneric
             ItsReactors = new List<Reactor>();
             for (int i = 0; i < populationSize; i++)
             {
-                var reactor = new Reactor(this, chambersPer, contents, finishedTrials[i]);
+                var reactor = new Reactor(this, chambersPer, contents);
                 Populator.RandomReactor(reactor);
                 ItsReactors.Add(reactor);
             }
@@ -28,7 +28,7 @@ namespace ReactorGeneric
         public string GenerateFitnessReport(int ticks)
         {
             var reportSF = new StringBuilder();
-            reportSF.AppendLine("Final Report");
+            reportSF.AppendLine("\n====Final Report====\n");
 
             var reactors = ItsReactors.ToList();
             reactors.Sort();
@@ -41,15 +41,12 @@ namespace ReactorGeneric
             return reportSF.ToString();
         }
 
-        public static void RunReactor(object state)
+        public static void RunReactor(Reactor reactor)
         {
-            var reactor = (Reactor) state;
-
             for (int t = 0; t < ItsTicksPerGeneration; t++)
             {
                 reactor.OnTick( );
             }
-            reactor.MarkFinal();
         }
     }
 }

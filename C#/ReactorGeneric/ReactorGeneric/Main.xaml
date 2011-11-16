@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Reactor Genetic" Height="800" Width="1200">
     <Grid>
-        <TextBox Margin="12,23,12,127" Name="txtOutput" IsReadOnly="True" VerticalScrollBarVisibility="Auto" />
+        <TextBox Margin="12,23,12,127" Name="txtOutput" IsReadOnly="True" VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" />
         <Button Height="23" HorizontalAlignment="Left" Margin="12,0,0,12" Name="btnStart" VerticalAlignment="Bottom" Width="75" Click="btnStart_Click">Start</Button>
         <Button Height="23" HorizontalAlignment="Left" Margin="122,0,0,12" Name="btnPause" VerticalAlignment="Bottom" Width="75" IsEnabled="False" Click="btnPause_Click">Pause</Button>
         <Button Height="23" HorizontalAlignment="Left" Margin="235,0,0,12" Name="btnStop" VerticalAlignment="Bottom" Width="75" IsEnabled="False" Click="btnStop_Click">Stop</Button>
