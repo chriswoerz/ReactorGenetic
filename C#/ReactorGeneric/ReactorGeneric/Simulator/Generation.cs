@@ -46,7 +46,7 @@ namespace ReactorGeneric.Simulator
         public string GenerateFitnessReport(int ticks)
         {
             var report = new StringBuilder();
-            report.AppendLine("\n====Generation Report====\n");
+            report.AppendLine("\n\r====Generation Report====\n\r");
 
             foreach (Reactor successfulReactor in ItsSuccessfulReactors)
             {

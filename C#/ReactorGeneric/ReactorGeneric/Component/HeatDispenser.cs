@@ -2,7 +2,7 @@
 
 namespace ReactorGeneric.Component
 {
-    public class HeatDispenser : AbstractComponent, ICooler
+    public class HeatDispenser : AbstractComponent, ICooler, IMeltable
     {
         public HeatDispenser(uint xpos, uint ypos, Component type)
             : base(xpos, ypos, type)
@@ -21,11 +21,25 @@ namespace ReactorGeneric.Component
             ItsCurrentHeat += genHeat;
         }
 
-        protected int ItsCurrentHeat { get; set; }
+        private float _currentHeat;
+        protected float ItsCurrentHeat
+        {
+            get { return _currentHeat; }
+            set
+            {
+                _currentHeat = value < 0 ? 0 : value;
+                if (_currentHeat >= ItsMeltingPoint) ItsReactor.OnMelt(new EventArgs());
+            }
+        }
 
         public float ItsCoolingPerTick
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public int ItsMeltingPoint
+        {
+            get { return 10000; }
         }
     }
 }

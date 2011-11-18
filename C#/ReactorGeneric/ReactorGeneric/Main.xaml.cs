@@ -72,13 +72,11 @@ namespace ReactorGeneric
                             txtOutput.Text = e.ReportText;
                             break;
                         case ReportType.Append:
-                            txtOutput.Text = e.ReportText;
-                            //txtOutput.AppendText(e.ReportText);
+                            txtOutput.AppendText(e.ReportText);
                             break;
                         case ReportType.ReplaceLast:
-                            txtOutput.Text = e.ReportText;
-                            //txtOutput.Text = RemoveLastLine(txtOutput.Text);
-                            //txtOutput.AppendText(e.ReportText);
+                            txtOutput.Text = RemoveLastLine(txtOutput.Text);
+                            txtOutput.AppendText(e.ReportText);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -95,7 +93,7 @@ namespace ReactorGeneric
 
         private string RemoveLastLine(string text)
         {
-            var lines = text.Split('\n');
+            var lines = text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             var newLines = lines.Take(lines.Count() - 1);
             return String.Join(Environment.NewLine, newLines);
         }

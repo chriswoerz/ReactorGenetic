@@ -42,13 +42,12 @@ namespace ReactorGeneric.Simulator
 
         private static void StartWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            var loopLock = new object();
-                OnReport(new ReportEventArgs(string.Format("Starting Population: {0}\n", ItsReactorCount), ReportType.Append));
+                OnReport(new ReportEventArgs(string.Format("Starting Population: {0}\n\r", ItsReactorCount), ReportType.Append));
             for (int i = 0; i < ItsGenerationCount; i++)
             {
                     RunGeneration();
             }
-                OnReport(new ReportEventArgs(string.Format("%%%Finished%%%:\n\n{0}", PrettyPrintFinal()), ReportType.Append));
+                OnReport(new ReportEventArgs(string.Format("%%%Finished%%%:\n\r{0}", PrettyPrintFinal()), ReportType.Append));
         }
 
         private static string PrettyPrintFinal()
@@ -59,7 +58,7 @@ namespace ReactorGeneric.Simulator
 
             foreach (ReactorResult reactorResult in ItsRunResults)
             {
-                toReturn += string.Format("EU: {0} EF: {1} M: {2}\n", reactorResult.ItsEUOutput,
+                toReturn += string.Format("EU: {0} EF: {1} M: {2}\n\r", reactorResult.ItsEUOutput,
                                           reactorResult.ItsEfficency, reactorResult.ItsManifest);
             }
             return toReturn;
@@ -157,7 +156,7 @@ namespace ReactorGeneric.Simulator
 
         private static void SignalOne(CountdownEvent countdown, string type)
         {
-            OnReport(new ReportEventArgs(string.Format("\n"+ type +" Left: {0}", countdown.CurrentCount), ReportType.ReplaceLast));
+            OnReport(new ReportEventArgs(string.Format("\n\r"+ type +" Left: {0}", countdown.CurrentCount), ReportType.ReplaceLast));
             countdown.Signal();
         }
 

@@ -20,14 +20,16 @@ namespace ReactorGeneric.Component
         public override void GiveHeat(int genHeat)
         {
             ItsCurrentHeat += genHeat;
-            if(ItsCurrentHeat >= ItsMeltingPoint) ItsReactor.OnMelt(new EventArgs());
         }
 
         private float _currentHeat;
         protected float ItsCurrentHeat
         {
             get { return _currentHeat; }
-            set { _currentHeat = value < 0 ? 0 : value; }
+            set { 
+                _currentHeat = value < 0 ? 0 : value;
+                if (_currentHeat >= ItsMeltingPoint) ItsReactor.OnMelt(new EventArgs());
+            }
         }
 
         public float ItsCoolingPerTick

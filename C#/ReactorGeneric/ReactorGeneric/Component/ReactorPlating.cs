@@ -23,7 +23,16 @@ namespace ReactorGeneric.Component
             ItsCurrentHeat += genHeat;
         }
 
-        protected float ItsCurrentHeat { get; set; }
+        private float _currentHeat;
+        protected float ItsCurrentHeat
+        {
+            get { return _currentHeat; }
+            set
+            {
+                _currentHeat = value < 0 ? 0 : value;
+                if (_currentHeat >= ItsMeltingPoint) ItsReactor.OnMelt(new EventArgs());
+            }
+        }
 
         public float ItsCoolingPerTick
         {

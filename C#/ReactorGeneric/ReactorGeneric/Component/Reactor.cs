@@ -205,7 +205,7 @@ namespace ReactorGeneric.Component
 
         public int CompareTo(Reactor other)
         {
-            return GetPowerHeatRatio().CompareTo(other.GetPowerHeatRatio());
+            return GetEfficency().CompareTo(other.GetEfficency());
         }
 
         public ReactorResult GetResult()
