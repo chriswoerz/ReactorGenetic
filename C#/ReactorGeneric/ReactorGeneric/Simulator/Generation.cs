@@ -15,6 +15,7 @@ namespace ReactorGeneric.Simulator
         {
             ItsMeltedReactors = new List<Reactor>();
             ItsSuccessfulReactors = new List<Reactor>();
+            ItsUnpoweredReactors = new List<Reactor>();
             ItsId = id;
         }
 
@@ -57,6 +58,7 @@ namespace ReactorGeneric.Simulator
         }
 
         protected IList<Reactor> ItsMeltedReactors { get; set; }
+        protected IList<Reactor> ItsUnpoweredReactors { get; set; }
         protected IList<Reactor> ItsSuccessfulReactors { get; set; }
 
         public static void RunReactor(Reactor reactor)
@@ -83,6 +85,10 @@ namespace ReactorGeneric.Simulator
                 if (reactor.ItsMeltedFlag)
                 {
                     ItsMeltedReactors.Add(reactor);
+                }
+                if (reactor.ItsPowerOutput == 0)
+                {
+                    ItsUnpoweredReactors.Add(reactor);
                 }
                 else
                 {
