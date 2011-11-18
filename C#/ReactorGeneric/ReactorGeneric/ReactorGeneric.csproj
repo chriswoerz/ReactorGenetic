@@ -105,8 +105,8 @@
     <Compile Include="Component\CoolantCell.cs" />
     <Compile Include="Component\HeatDispenser.cs" />
     <Compile Include="Component\IMeltable.cs" />
-    <Compile Include="Population.cs" />
-    <Compile Include="Populator.cs" />
+    <Compile Include="Simulator\Generation.cs" />
+    <Compile Include="Simulator\Populator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -120,11 +120,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ReactorEventArgs.cs" />
-    <Compile Include="Reactor.cs" />
+    <Compile Include="Component\ReactorEventArgs.cs" />
+    <Compile Include="Component\Reactor.cs" />
     <Compile Include="Component\ReactorPlating.cs" />
     <Compile Include="ReportEventArgs.cs" />
-    <Compile Include="ThunderDome.cs" />
+    <Compile Include="Simulator\ThunderDome.cs" />
     <Compile Include="Component\UraninumCell.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

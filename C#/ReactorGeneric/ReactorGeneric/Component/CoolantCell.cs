@@ -23,7 +23,12 @@ namespace ReactorGeneric.Component
             if(ItsCurrentHeat >= ItsMeltingPoint) ItsReactor.OnMelt(new EventArgs());
         }
 
-        protected float ItsCurrentHeat { get; set; }
+        private float _currentHeat;
+        protected float ItsCurrentHeat
+        {
+            get { return _currentHeat; }
+            set { _currentHeat = value < 0 ? 0 : value; }
+        }
 
         public float ItsCoolingPerTick
         {

@@ -18,7 +18,7 @@ namespace ReactorGeneric.Component
 
         public void PulseHandler(object sender, EventArgs e)
         {
-            ItsReactor.CurrentHeat -= 1;
+            ItsReactor.ItsHeat -= 2;
         }
     }
 }

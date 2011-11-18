@@ -14,9 +14,9 @@ namespace ReactorGeneric.Component
         {
             base.PulseHandler(sender, e);
 
-            int pulses = GetPulses();
+            int pulses = GetPulseCount();
 
-            ItsReactor.EmitEU(pulses);
+            ItsReactor.EmitPulseToReactor(pulses);
 
             for (; pulses > 0; pulses--)
             {
@@ -40,7 +40,7 @@ namespace ReactorGeneric.Component
 
                 if (coolerCount == 0)
                 {
-                    ItsReactor.CurrentHeat += genHeat;
+                    ItsReactor.ItsHeat += genHeat;
                 }
                 else
                 {
@@ -75,7 +75,7 @@ namespace ReactorGeneric.Component
             return count;
         }
 
-        private int GetPulses()
+        private int GetPulseCount()
         {
             int count = 1;
 

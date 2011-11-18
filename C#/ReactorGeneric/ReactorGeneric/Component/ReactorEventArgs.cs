@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReactorGeneric
+namespace ReactorGeneric.Component
 {
     public class ReactorEventArgs : EventArgs
     {

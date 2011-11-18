@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ReactorGeneric.Simulator;
 
 namespace ReactorGeneric
 {
@@ -20,6 +21,7 @@ namespace ReactorGeneric
     /// </summary>
     public partial class Main : Window
     {
+        private object txtLock = new object();
         public Main()
         {
             InitializeComponent();
@@ -62,25 +64,31 @@ namespace ReactorGeneric
         {
             if (txtOutput.Dispatcher.Thread == Thread.CurrentThread)
             {
-                switch (e.Action)
+                lock (txtLock)
                 {
-                    case ReportType.Replace:
-                        txtOutput.Text = e.ReportText;
-                        break;
-                    case ReportType.Append:
-                        txtOutput.AppendText(e.ReportText);
-                        break;
-                    case ReportType.ReplaceLast:
-                        txtOutput.Text = RemoveLastLine(txtOutput.Text);
-                        txtOutput.AppendText(e.ReportText);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    switch (e.Action)
+                    {
+                        case ReportType.Replace:
+                            txtOutput.Text = e.ReportText;
+                            break;
+                        case ReportType.Append:
+                            txtOutput.Text = e.ReportText;
+                            //txtOutput.AppendText(e.ReportText);
+                            break;
+                        case ReportType.ReplaceLast:
+                            txtOutput.Text = e.ReportText;
+                            //txtOutput.Text = RemoveLastLine(txtOutput.Text);
+                            //txtOutput.AppendText(e.ReportText);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    txtOutput.ScrollToEnd();
                 }
             }
             else
             {
-                txtOutput.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                txtOutput.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Send,
                     new EventHandler<ReportEventArgs>(ReportToUserHandler), sender, new object[] { e });
             }
         }
