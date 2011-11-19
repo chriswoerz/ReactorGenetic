@@ -11,7 +11,7 @@ namespace ReactorGeneric.Component
         uint XPosition { get; }
         uint YPosition { get; }
         bool IsType(Component component);
-        void GiveHeat(int genHeat);
+        void GiveHeat(int genHeat, Component from);
         Component Type { get; }
     }
 }

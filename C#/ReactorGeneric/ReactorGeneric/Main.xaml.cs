@@ -42,7 +42,7 @@ namespace ReactorGeneric
             btnStop.IsEnabled = true;
             btnPause.IsEnabled = true;
             ThunderDome.Report += ReportToUserHandler;   
-            ThunderDome.Start(Convert.ToInt32(txtPopulation.Text), Convert.ToInt32(txtChamber.Text), Convert.ToInt32(txtGenerations.Text), Convert.ToInt32(txtTicks.Text));
+            ThunderDome.Start(Convert.ToInt32(txtPopulation.Text), Convert.ToInt32(txtChamber.Text), Convert.ToInt32(txtGenerations.Text), Convert.ToInt32(txtTicks.Text), Convert.ToInt32(txtExternalC.Text));
         }
 
         private void DisableTextInput()
@@ -133,6 +133,11 @@ namespace ReactorGeneric
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             txtOutput.Clear();
+        }
+
+        private void txtChamber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtExternalC != null) txtExternalC.Text = (25 - Convert.ToInt32(txtChamber.Text)).ToString();
         }
     }
 

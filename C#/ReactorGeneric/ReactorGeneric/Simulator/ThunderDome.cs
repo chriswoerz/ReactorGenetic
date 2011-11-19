@@ -22,12 +22,13 @@ namespace ReactorGeneric.Simulator
         }
 
 
-        public static void Start(int population, int chambers, int generations, int ticksPerGeneration)
+        public static void Start(int population, int chambers, int generations, int ticksPerGeneration, int externalCoolingPerTick)
         {
             ItsRunResults = new List<ReactorResult>();
             ItsReactorCount = population;
             ItsGenerationCount = generations;
             ItsChambers = chambers;
+            ItsExternalCoolingPerTick = externalCoolingPerTick;
             ItsTicksPerGeneration = ticksPerGeneration;
 
             var worker = new BackgroundWorker();
@@ -37,17 +38,19 @@ namespace ReactorGeneric.Simulator
            
         }
 
+        private static int ItsExternalCoolingPerTick { get; set; }
+
         private static int ItsGenerationCount { get; set; }
 
 
         private static void StartWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-                OnReport(new ReportEventArgs(string.Format("Starting Population: {0}\n\r", ItsReactorCount), ReportType.Append));
+                OnReport(new ReportEventArgs(string.Format("Starting Population: {0}{1}", ItsReactorCount, Environment.NewLine), ReportType.Append));
             for (int i = 0; i < ItsGenerationCount; i++)
             {
                     RunGeneration();
             }
-                OnReport(new ReportEventArgs(string.Format("%%%Finished%%%:\n\r{0}", PrettyPrintFinal()), ReportType.Append));
+                OnReport(new ReportEventArgs(string.Format("{1}====Finished:===={1}{0}", PrettyPrintFinal(), Environment.NewLine), ReportType.Append));
         }
 
         private static string PrettyPrintFinal()
@@ -56,10 +59,10 @@ namespace ReactorGeneric.Simulator
 
             string toReturn = string.Empty;
 
-            foreach (ReactorResult reactorResult in ItsRunResults)
+            foreach (ReactorResult reactorResult in ItsRunResults.Take(ItsReactorCount/2))
             {
-                toReturn += string.Format("EU: {0} EF: {1} M: {2}\n\r", reactorResult.ItsEUOutput,
-                                          reactorResult.ItsEfficency, reactorResult.ItsManifest);
+                toReturn += string.Format("EU: {0} EF: {1} M: {2}{3}", reactorResult.ItsEUOutput,
+                                          reactorResult.ItsEfficency, reactorResult.ItsManifest, Environment.NewLine);
             }
             return toReturn;
         }
@@ -88,9 +91,9 @@ namespace ReactorGeneric.Simulator
             Generation generation;
 
             if (initialPopulation.Count() > 0)
-                generation = new Generation(ItsCurrentGenerationId, initialPopulation, ItsReactorCount, ItsChambers, ItsTicksPerGeneration);
+                generation = new Generation(ItsCurrentGenerationId, initialPopulation, ItsReactorCount, ItsChambers, ItsTicksPerGeneration, ItsExternalCoolingPerTick);
             else
-                generation = new Generation(ItsCurrentGenerationId, ItsReactorCount, ItsChambers, ItsTicksPerGeneration);
+                generation = new Generation(ItsCurrentGenerationId, ItsReactorCount, ItsChambers, ItsTicksPerGeneration, ItsExternalCoolingPerTick);
             
 
             foreach (Reactor reactor in generation.ItsReactors)
@@ -156,7 +159,7 @@ namespace ReactorGeneric.Simulator
 
         private static void SignalOne(CountdownEvent countdown, string type)
         {
-            OnReport(new ReportEventArgs(string.Format("\n\r"+ type +" Left: {0}", countdown.CurrentCount), ReportType.ReplaceLast));
+            OnReport(new ReportEventArgs(string.Format("{1}"+ type +" Left: {0}", countdown.CurrentCount, Environment.NewLine), ReportType.ReplaceLast));
             countdown.Signal();
         }
 
@@ -179,7 +182,7 @@ namespace ReactorGeneric.Simulator
 
         public int ItsEUOutput { get; set; }
 
-        public int ItsHeat { get; set; }
+        public float ItsHeat { get; set; }
 
         public int ItsEfficency { get; set; }
 

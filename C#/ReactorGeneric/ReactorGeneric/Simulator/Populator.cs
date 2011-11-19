@@ -104,7 +104,7 @@ namespace ReactorGeneric.Simulator
             return Components[Random.Next(0, Components.Length)];
         }
 
-        public static IList<Reactor> Repopulate(Generation generation, IList<ReactorResult> startingPopulation, int targetPopulation, int chambers)
+        public static IList<Reactor> Repopulate(Generation generation, IList<ReactorResult> startingPopulation, int targetPopulation, int chambers, int externalCoolingPerTick)
         {
             IList<Reactor> toReturn = new List<Reactor>();
 
@@ -117,7 +117,7 @@ namespace ReactorGeneric.Simulator
 
                 string mutatedChildRNA = SingleMutation(childRNA);
 
-                toReturn.Add(new Reactor(generation, chambers, childRNA));
+                toReturn.Add(new Reactor(generation, chambers, childRNA, externalCoolingPerTick));
             }
 
             return toReturn;

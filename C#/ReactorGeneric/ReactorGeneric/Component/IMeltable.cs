@@ -8,5 +8,6 @@ namespace ReactorGeneric.Component
     public interface IMeltable
     {
         int ItsMeltingPoint { get; }
+        float ItsCurrentHeat { get; set; }
     }
 }

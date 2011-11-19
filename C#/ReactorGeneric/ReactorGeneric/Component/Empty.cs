@@ -15,7 +15,7 @@ namespace ReactorGeneric.Component
             //Do Nothing
         }
 
-        public override void GiveHeat(int genHeat)
+        public override void GiveHeat(int genHeat, Component from)
         {
             //Do Nothing
         }

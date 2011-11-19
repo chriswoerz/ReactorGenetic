@@ -49,7 +49,7 @@ namespace ReactorGeneric.Component
             }
         }
 
-        public override void GiveHeat(int genHeat)
+        public override void GiveHeat(int genHeat, Component from)
         {
             //Fat Interface
             //throw new NotImplementedException();
@@ -57,14 +57,16 @@ namespace ReactorGeneric.Component
 
         private void GiveHeatAdjacent(int genHeat)
         {
-            if (ItsLeft != null) ItsLeft.GiveHeat(genHeat);
-            if (ItsRight != null) ItsRight.GiveHeat(genHeat);
-            if (ItsAbove != null) ItsAbove.GiveHeat(genHeat);
-            if (ItsBelow != null) ItsBelow.GiveHeat(genHeat); 
+            if (ItsLeft != null) ItsLeft.GiveHeat(genHeat, this.Type);
+            if (ItsRight != null) ItsRight.GiveHeat(genHeat, this.Type);
+            if (ItsAbove != null) ItsAbove.GiveHeat(genHeat, this.Type);
+            if (ItsBelow != null) ItsBelow.GiveHeat(genHeat, this.Type); 
         }
 
         private int GetCoolerCount()
         {
+            if (!ItsFirstPulse) return ItsCoolerCount;
+
             int count = 0;
 
             if (ItsLeft != null) count += ItsLeft is ICooler ? 1 : 0;
@@ -72,11 +74,15 @@ namespace ReactorGeneric.Component
             if (ItsAbove != null) count += ItsAbove is ICooler ? 1 : 0;
             if (ItsBelow != null) count += ItsBelow is ICooler ? 1 : 0;
 
-            return count;
+            return ItsCoolerCount = count;
         }
+
+        protected int ItsCoolerCount { get; set; }
 
         private int GetPulseCount()
         {
+            if (!ItsFirstPulse) return ItsPulseCount;
+
             int count = 1;
 
             if (ItsLeft != null) count += ItsLeft.IsType(this.Type) ? 1 : 0;
@@ -84,7 +90,9 @@ namespace ReactorGeneric.Component
             if (ItsAbove != null) count += ItsAbove.IsType(this.Type) ? 1 : 0;
             if (ItsBelow != null) count += ItsBelow.IsType(this.Type) ? 1 : 0;
 
-            return count;
+            return ItsPulseCount = count;
         }
+
+        protected int ItsPulseCount { get; set; }
     }
 }

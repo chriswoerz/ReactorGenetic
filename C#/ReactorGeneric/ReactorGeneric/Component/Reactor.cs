@@ -18,21 +18,22 @@ namespace ReactorGeneric.Component
 
         public int ItsPowerOutput { get; private set; }
         
-        public Reactor(Generation generation, int chambers)
+        public Reactor(Generation generation, int chambers, int externalCoolingPerTick)
         {
-            Initialize(generation, chambers);
+            Initialize(generation, chambers, externalCoolingPerTick);
             Populator.RandomReactor(this);
         }
 
-        public Reactor(Generation generation, int chambers, string rna)
+        public Reactor(Generation generation, int chambers, string rna, int externalCoolingPerTick)
         {
-            Initialize(generation, chambers);
+            Initialize(generation, chambers, externalCoolingPerTick);
             ItsComponents = Populator.BuildComponentsFromRNA(this, rna);
         }
 
-        private void Initialize(Generation generation, int chambers)
+        private void Initialize(Generation generation, int chambers, int externalCoolingPerTick)
         {
             ItsGeneration = generation;
+            ItsExternalCooling = externalCoolingPerTick;
             Chambers = new List<Chamber>();
             ItsComponents = new List<IComponent>();
 
@@ -44,6 +45,8 @@ namespace ReactorGeneric.Component
             }
             HookupEvents();
         }
+
+        protected int ItsExternalCooling { get; set; }
 
         public event EventHandler<EventArgs> Pulse;
         public event EventHandler<EventArgs> Melt;
@@ -59,7 +62,7 @@ namespace ReactorGeneric.Component
             if (Pulse != null && !ItsMeltedFlag)
             {
                 ItsPulsesRecieved++;
-                ItsHeat -= 1;
+                ItsHeat -= 1 + ItsExternalCooling;
                 Pulse(this, new EventArgs());
             }
         }
@@ -87,8 +90,8 @@ namespace ReactorGeneric.Component
             get { return 10000; }
         }
 
-        private int _heat;
-        public int ItsHeat
+        private float _heat;
+        public float ItsHeat
         {
             get { return _heat; }
             set 
@@ -106,10 +109,13 @@ namespace ReactorGeneric.Component
         {
             get
             {
-                _totalHeatCap = _totalHeatCap ??
-                    this.HeatCapacity + 
-                    Chamber.SystemCapacityAdd*Chambers.Count + 
-                    ReactorPlating.SystemCapacityAdd*ItsComponents.ToList().FindAll(c => c.IsType(Component.ReactorPlating)).Count ;
+                if (!_totalHeatCap.HasValue)
+                {
+                    _totalHeatCap = 
+                        this.HeatCapacity + 
+                        Chamber.SystemCapacityAdd*Chambers.Count + 
+                        ReactorPlating.SystemCapacityAdd*ItsComponents.ToList().FindAll(c => c.IsType(Component.ReactorPlating)).Count ;
+                }
 
                 return _totalHeatCap.Value;
             }
@@ -200,7 +206,8 @@ namespace ReactorGeneric.Component
         {
             if (ItsPowerOutput == 0 || ItsHeat == 0) return 0;
 
-            return (float)Math.Round(((decimal)ItsPowerOutput/ItsHeat), 3);
+            return (float)Math.Round((ItsPowerOutput/ItsHeat), 3);
+
         }
 
         public int CompareTo(Reactor other)

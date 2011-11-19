@@ -17,13 +17,13 @@ namespace ReactorGeneric.Component
            
         }
 
-        public override void GiveHeat(int genHeat)
+        public override void GiveHeat(int genHeat, Component from)
         {
             ItsCurrentHeat += genHeat;
         }
 
         private float _currentHeat;
-        protected float ItsCurrentHeat
+        public float ItsCurrentHeat
         {
             get { return _currentHeat; }
             set { 

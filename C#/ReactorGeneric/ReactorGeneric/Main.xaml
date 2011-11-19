@@ -10,11 +10,13 @@
         <Button Height="23" HorizontalAlignment="Left" Margin="345,0,0,12" Name="btnClear" VerticalAlignment="Bottom" Width="75" Click="btnClear_Click">Clear</Button>
         <TextBox Height="23" HorizontalAlignment="Right" Margin="0,0,913,98" Name="txtPopulation" VerticalAlignment="Bottom" Width="147">1000</TextBox>
         <Label Height="23" HorizontalAlignment="Left" Margin="12,641,0,0" Name="lblPopulation" VerticalAlignment="Top" Width="100">Population Size:</Label>
-        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,0,913,59" Name="txtChamber" VerticalAlignment="Bottom" Width="147">2</TextBox>
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,0,913,59" Name="txtChamber" VerticalAlignment="Bottom" Width="147" TextChanged="txtChamber_TextChanged">2</TextBox>
         <Label Height="23" HorizontalAlignment="Left" Margin="12,0,0,61" Name="lblChamber" VerticalAlignment="Bottom" Width="100">Chambers Per:</Label>
-        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,0,631,98" Name="txtGenerations" VerticalAlignment="Bottom" Width="147">1000</TextBox>
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="400,0,0,98" Name="txtGenerations" VerticalAlignment="Bottom" Width="147">1000</TextBox>
         <Label Height="23" HorizontalAlignment="Left" Margin="294,0,0,98" Name="lblGenerations" VerticalAlignment="Bottom" Width="100">Generations:</Label>
         <TextBox Height="23" HorizontalAlignment="Left" Margin="400,0,0,59" Name="txtTicks" VerticalAlignment="Bottom" Width="147">200000</TextBox>
         <Label Height="23" HorizontalAlignment="Left" Margin="294,0,0,59" Name="lblTicks" VerticalAlignment="Bottom" Width="100">Ticks Per Gen:</Label>
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,0,339,97" Name="txtExternalC"  Text="23" VerticalAlignment="Bottom" Width="147" IsReadOnly="True" />
+        <Label Content="External Cooling:" Height="31" HorizontalAlignment="Left" Margin="586,0,0,89" Name="lblExternalC" VerticalAlignment="Bottom" Width="100" />
     </Grid>
 </Window>

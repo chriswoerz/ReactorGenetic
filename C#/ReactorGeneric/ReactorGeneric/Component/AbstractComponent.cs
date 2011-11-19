@@ -15,6 +15,7 @@ namespace ReactorGeneric.Component
         {
             XPosition = xpos;
             YPosition = ypos;
+            ItsFirstPulse = true;
             _type = type;
         }
 
@@ -22,10 +23,20 @@ namespace ReactorGeneric.Component
         {
             ItsReactor = (Reactor)sender;
 
-            ItsLeft = ItsLeft ?? ItsReactor.GetComponent(XPosition - 1, YPosition);
-            ItsRight = ItsRight ?? ItsReactor.GetComponent(XPosition + 1, YPosition);
-            ItsAbove = ItsAbove ?? ItsReactor.GetComponent(XPosition, YPosition + 1);
-            ItsBelow = ItsBelow ?? ItsReactor.GetComponent(XPosition, YPosition - 1);
+            if (!ItsFirstPulse) return;
+            ItsFirstPulse = false;
+
+            if (ItsLeft == null && XPosition != 0)
+                ItsLeft = ItsReactor.GetComponent(XPosition - 1, YPosition);
+    
+            if (ItsRight == null && XPosition != ItsReactor.GetWidth())
+                ItsRight = ItsReactor.GetComponent(XPosition + 1, YPosition);
+    
+            if (ItsAbove == null && XPosition != ItsReactor.GetHeight())
+                ItsAbove = ItsReactor.GetComponent(XPosition, YPosition + 1);
+    
+            if (ItsBelow == null && YPosition != 0)
+                ItsBelow = ItsReactor.GetComponent(XPosition, YPosition - 1);
         }
 
         protected IComponent ItsBelow { get; set; }
@@ -35,6 +46,8 @@ namespace ReactorGeneric.Component
         protected IComponent ItsRight { get; set; }
 
         protected IComponent ItsLeft { get; set; }
+
+        protected bool ItsFirstPulse { get; set; }
 
         protected Reactor ItsReactor { get; set; }
 
@@ -46,6 +59,6 @@ namespace ReactorGeneric.Component
             return component == Type;
         }
 
-        public abstract void GiveHeat(int genHeat);
+        public abstract void GiveHeat(int genHeat, Component from);
     }
 }
