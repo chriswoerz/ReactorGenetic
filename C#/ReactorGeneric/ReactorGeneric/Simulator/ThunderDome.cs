@@ -9,6 +9,8 @@ namespace ReactorGeneric.Simulator
 {
     public static class ThunderDome
     {
+        private const bool RunThreaded = false;
+
         //public static Generation ItsGeneration { get; set; }
 
         public static List<ReactorResult> ItsRunResults { get; set; }
@@ -98,21 +100,27 @@ namespace ReactorGeneric.Simulator
 
             foreach (Reactor reactor in generation.ItsReactors)
             {
-                countdown.AddCount();
+                if (RunThreaded)
+                {
+                    countdown.AddCount();
 
-                Reactor reactorState = reactor;
-                ThreadPool.QueueUserWorkItem(
-                  (state) =>
-                  {
-                      try
+                    Reactor reactorState = reactor;
+                    ThreadPool.QueueUserWorkItem(
+                      (state) =>
                       {
-                          Generation.RunReactor(reactorState);
-                      }
-                      finally
-                      {
-                          SignalOne(countdown, "Reactors");
-                      }
-                  });
+                          try
+                          {
+                              Generation.RunReactor(reactorState);
+                          }
+                          finally
+                          {
+                              SignalOne(countdown, "Reactors");
+                          }
+                      });
+                }
+                else {
+                    Generation.RunReactor(reactor);
+                }
             }
             SignalOne(countdown, "Reactors");
             countdown.Wait();
@@ -182,7 +190,7 @@ namespace ReactorGeneric.Simulator
 
         public int ItsEUOutput { get; set; }
 
-        public float ItsHeat { get; set; }
+        public int ItsHeat { get; set; }
 
         public int ItsEfficency { get; set; }
 

@@ -24,7 +24,6 @@ namespace ReactorGeneric.Component
             ItsReactor = (Reactor)sender;
 
             if (!ItsFirstPulse) return;
-            ItsFirstPulse = false;
 
             if (ItsLeft == null && XPosition != 0)
                 ItsLeft = ItsReactor.GetComponent(XPosition - 1, YPosition);
@@ -59,6 +58,9 @@ namespace ReactorGeneric.Component
             return component == Type;
         }
 
-        public abstract void GiveHeat(int genHeat, Component from);
+        protected void PostPulse(){            
+            ItsFirstPulse = false;
+        }
+        public abstract void GiveHeat(int genHeat, Component from, int hops);
     }
 }

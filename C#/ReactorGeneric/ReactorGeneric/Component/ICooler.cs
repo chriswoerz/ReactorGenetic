@@ -5,8 +5,7 @@ using System.Text;
 
 namespace ReactorGeneric.Component
 {
-    interface ICooler : IComponent
+    public interface ICooler
     {
-        float ItsCoolingPerTick { get; }
     }
 }

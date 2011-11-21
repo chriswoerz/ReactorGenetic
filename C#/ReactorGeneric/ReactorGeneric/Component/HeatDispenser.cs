@@ -2,7 +2,7 @@
 
 namespace ReactorGeneric.Component
 {
-    public class HeatDispenser : AbstractComponent, ICooler, IMeltable
+    public class HeatDispenser : AbstractComponent, IHeatable
     {
         public HeatDispenser(uint xpos, uint ypos, Component type)
             : base(xpos, ypos, type)
@@ -14,29 +14,32 @@ namespace ReactorGeneric.Component
         {
             base.PulseHandler(sender, e);
 
+            PostPulse();
         }
 
-        public override void GiveHeat(int genHeat, Component from)
+        public override void GiveHeat(int genHeat, Component from, int hops)
         {
             ItsCurrentHeat += genHeat;
-            RebalanceHeat();
+            
+            if(ItsReactor != null)
+                RebalanceHeat(hops);
         }
 
-        private void RebalanceHeat()
+        private void RebalanceHeat(int hops)
         {
-            RebalanceHeat(ItsLeft);
-            RebalanceHeat(ItsRight);
-            RebalanceHeat(ItsBelow);
-            RebalanceHeat(ItsAbove);
+            RebalanceHeat(ItsLeft, hops);
+            RebalanceHeat(ItsRight, hops);
+            RebalanceHeat(ItsBelow, hops);
+            RebalanceHeat(ItsAbove, hops);
             RebalanceHeat(ItsReactor);  
         }
 
         private void RebalanceHeat(Reactor reactor)
         {
-            float difference = reactor.ItsHeat - this.ItsCurrentHeat;
+            int difference = reactor.ItsHeat - this.ItsCurrentHeat;
             if (Math.Abs(difference - 0.0f) < 0) return;
             
-            float rebalance = Math.Abs(difference) /2;
+            int rebalance = (int)Math.Abs(difference) /2;
 
             if (rebalance > 25) rebalance = 25;
 
@@ -54,38 +57,44 @@ namespace ReactorGeneric.Component
             }
         }
 
-        private void RebalanceHeat(IComponent component )
+        private void RebalanceHeat(IComponent component, int hops )
         {
-            if (component == null || component is ReactorPlating || component is CoolantCell) return;
+            if (component == null || (!(component is ReactorPlating) && !(component is CoolantCell))) return;
 
-            var meltable = component as IMeltable;
-            if (meltable == null) return;
+            var heatable = component as IHeatable;
+            if (heatable == null) return;
 
 
-            float difference = meltable.ItsCurrentHeat - this.ItsCurrentHeat;
+            int difference = heatable.ItsCurrentHeat - this.ItsCurrentHeat;
             if (Math.Abs(difference - 0.0f) < 0) return;
 
-            float rebalance = Math.Abs(difference) / 2;
+            int rebalance = (int)Math.Abs(difference) / 2;
 
             if (rebalance > 6) rebalance = 6;
 
             //component has more heat
             if (difference > 0)
             {
-                this.ItsCurrentHeat -= rebalance;
-                meltable.ItsCurrentHeat += rebalance;
+                this.ItsCurrentHeat += rebalance;
+                heatable.TakeHeat(rebalance);
             }
             //this has more heat
             else
             {
-                this.ItsCurrentHeat += rebalance;
-                meltable.ItsCurrentHeat -= rebalance;
+                this.ItsCurrentHeat -= rebalance;
+                if (component is CoolantCell)
+                {
+                    heatable.GiveHeat(rebalance, this.Type, hops);
+                }
+                else{
+
+                }
             }
             
         }
 
-        private float _currentHeat;
-        public float ItsCurrentHeat
+        private int _currentHeat;
+        public int ItsCurrentHeat
         {
             get { return _currentHeat; }
             set
@@ -95,7 +104,7 @@ namespace ReactorGeneric.Component
             }
         }
 
-        public float ItsCoolingPerTick
+        public int ItsCoolingPerTick
         {
             get { throw new NotImplementedException(); }
         }
@@ -104,5 +113,15 @@ namespace ReactorGeneric.Component
         {
             get { return 10000; }
         }
+
+        #region IHeatable Members
+
+
+        public void TakeHeat(int rebalance)
+        {
+            ItsCurrentHeat -= rebalance;
+        }
+
+        #endregion
     }
 }

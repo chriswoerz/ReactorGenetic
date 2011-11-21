@@ -5,9 +5,11 @@ using System.Text;
 
 namespace ReactorGeneric.Component
 {
-    public interface IMeltable
+    public interface IHeatable : IComponent
     {
         int ItsMeltingPoint { get; }
-        float ItsCurrentHeat { get; set; }
+        int ItsCurrentHeat { get; set; }
+        void TakeHeat(int rebalance);
+        void GiveHeat(int genHeat, Component from, int hops);
     }
 }

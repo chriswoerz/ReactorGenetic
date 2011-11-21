@@ -90,6 +90,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Component\ICooler.cs" />
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -100,7 +101,6 @@
     <Compile Include="Component\Chamber.cs" />
     <Compile Include="Component\Component.cs" />
     <Compile Include="Component\Empty.cs" />
-    <Compile Include="Component\ICooler.cs" />
     <Compile Include="Component\IComponent.cs" />
     <Compile Include="Component\CoolantCell.cs" />
     <Compile Include="Component\HeatDispenser.cs" />

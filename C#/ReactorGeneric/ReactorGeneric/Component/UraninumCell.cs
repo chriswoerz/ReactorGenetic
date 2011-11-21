@@ -47,9 +47,11 @@ namespace ReactorGeneric.Component
                     GiveHeatAdjacent(genHeat);
                 }
             }
+
+            PostPulse();
         }
 
-        public override void GiveHeat(int genHeat, Component from)
+        public override void GiveHeat(int genHeat, Component from, int hops)
         {
             //Fat Interface
             //throw new NotImplementedException();
@@ -57,10 +59,15 @@ namespace ReactorGeneric.Component
 
         private void GiveHeatAdjacent(int genHeat)
         {
-            if (ItsLeft != null) ItsLeft.GiveHeat(genHeat, this.Type);
-            if (ItsRight != null) ItsRight.GiveHeat(genHeat, this.Type);
-            if (ItsAbove != null) ItsAbove.GiveHeat(genHeat, this.Type);
-            if (ItsBelow != null) ItsBelow.GiveHeat(genHeat, this.Type); 
+            var hops = 1;
+            if (ItsLeft != null && (ItsLeft is IHeatable))
+                (ItsLeft as IHeatable).GiveHeat(genHeat, this.Type, hops);
+            if (ItsRight != null && (ItsRight is IHeatable))
+                (ItsRight as IHeatable).GiveHeat(genHeat, this.Type, hops);
+            if (ItsAbove != null && (ItsAbove is IHeatable))
+                (ItsAbove as IHeatable).GiveHeat(genHeat, this.Type, hops);
+            if (ItsBelow != null && (ItsBelow is IHeatable))
+                (ItsBelow as IHeatable).GiveHeat(genHeat, this.Type, hops);
         }
 
         private int GetCoolerCount()

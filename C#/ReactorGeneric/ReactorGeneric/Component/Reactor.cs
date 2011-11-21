@@ -90,17 +90,13 @@ namespace ReactorGeneric.Component
             get { return 10000; }
         }
 
-        private float _heat;
-        public float ItsHeat
+        private int _heat;
+        public int ItsHeat
         {
             get { return _heat; }
             set 
             { 
-                _heat = value < 0 ? 0 : value;
-                if (_heat > 100000)
-                {
-                    var bang = "";
-                }
+                _heat = value < 0 ? 0 : value;              
                 if (_heat >= SystemHeatCapacity) OnMelt(new EventArgs());
             }
         }
@@ -202,11 +198,11 @@ namespace ReactorGeneric.Component
             ItsPowerOutput += 5*pulses;
         }
 
-        private float GetPowerHeatRatio()
+        private int GetPowerHeatRatio()
         {
             if (ItsPowerOutput == 0 || ItsHeat == 0) return 0;
 
-            return (float)Math.Round((ItsPowerOutput/ItsHeat), 3);
+            return ItsPowerOutput/ItsHeat;
 
         }
 

@@ -2,9 +2,10 @@
 
 namespace ReactorGeneric.Component
 {
-    public class ReactorPlating : AbstractComponent, ICooler, IMeltable
+    public class ReactorPlating : AbstractComponent, ICooler, IHeatable
     {
         public static int SystemCapacityAdd = 100;
+        private int PulsesSinceCooling = 0;
 
         public ReactorPlating(uint xpos, uint ypos, Component type)
             : base(xpos, ypos, type)
@@ -14,18 +15,25 @@ namespace ReactorGeneric.Component
 
         public override void PulseHandler(object sender, EventArgs e)
         {
-            ItsCurrentHeat -= ItsCoolingPerTick;
             base.PulseHandler(sender, e);
+
+            PulsesSinceCooling++;
+            if (PulsesSinceCooling * ItsCoolingPerTick == 1)
+            {
+                ItsCurrentHeat -= 1;
+                PulsesSinceCooling = 0;
+            }
+
+            PostPulse();
         }
 
-        public override void GiveHeat(int genHeat, Component from)
+        public override void GiveHeat(int genHeat, Component from, int hops)
         {
             ItsCurrentHeat += genHeat;
-
         }
 
-        private float _currentHeat;
-        public float ItsCurrentHeat
+        private int _currentHeat;
+        public int ItsCurrentHeat
         {
             get { return _currentHeat; }
             set
@@ -44,5 +52,15 @@ namespace ReactorGeneric.Component
         {
             get { return 10000; }
         }
+
+        #region IHeatable Members
+
+
+        public void TakeHeat(int rebalance)
+        {
+            ItsCurrentHeat -= rebalance;
+        }
+
+        #endregion
     }
 }
